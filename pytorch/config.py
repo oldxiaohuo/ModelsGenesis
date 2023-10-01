@@ -17,7 +17,7 @@ class models_genesis_config:
     input_rows = 64
     input_cols = 64 
     input_deps = 32
-    nb_class = 1
+    nb_class = 1        #这个参数是什么意思
     
     # model pre-training
     verbose = 1

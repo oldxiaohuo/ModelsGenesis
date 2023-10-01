@@ -71,7 +71,7 @@ class setup_config():
                  input_rows=None, 
                  input_cols=None,
                  input_deps=None,
-                 crop_rows=None, 
+                 crop_rows=None,        
                  crop_cols=None,
                  len_border=None,
                  len_border_z=None,
@@ -87,11 +87,11 @@ class setup_config():
         self.input_rows = input_rows
         self.input_cols = input_cols
         self.input_deps = input_deps
-        self.crop_rows = crop_rows
-        self.crop_cols = crop_cols
+        self.crop_rows = crop_rows      #这两个参数的具体意思， 默认64
+        self.crop_cols = crop_cols      #这两个参数的具体意思， 默认64
         self.len_border = len_border
         self.len_border_z = len_border_z
-        self.scale = scale
+        self.scale = scale              #这个scale参数具体什么意义，默认32
         self.DATA_DIR = DATA_DIR
         self.train_fold = train_fold
         self.valid_fold = valid_fold
@@ -127,7 +127,7 @@ config.display()
 
 def infinite_generator_from_one_volume(config, img_array):
     size_x, size_y, size_z = img_array.shape
-    if size_z-config.input_deps-config.len_depth-1-config.len_border_z < config.len_border_z:
+    if size_z-config.input_deps-config.len_depth-1-config.len_border_z < config.len_border_z:   #这两句代码什么意思
         return None
     
     img_array[img_array < config.hu_min] = config.hu_min
@@ -136,14 +136,14 @@ def infinite_generator_from_one_volume(config, img_array):
     
     slice_set = np.zeros((config.scale, config.input_rows, config.input_cols, config.input_deps), dtype=float)
     
-    num_pair = 0
+    num_pair = 0        #这个参数是什么意义
     cnt = 0
     while True:
         cnt += 1
         if cnt > 50 * config.scale and num_pair == 0:
             return None
         elif cnt > 50 * config.scale and num_pair > 0:
-            return np.array(slice_set[:num_pair])
+            return np.array(slice_set[:num_pair])       #这句代码什么作用？
 
         start_x = random.randint(0+config.len_border, size_x-config.crop_rows-1-config.len_border)
         start_y = random.randint(0+config.len_border, size_y-config.crop_cols-1-config.len_border)
